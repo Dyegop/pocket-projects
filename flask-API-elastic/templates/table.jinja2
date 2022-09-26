@@ -1,0 +1,37 @@
+{% extends 'base.jinja2' %}
+
+{% block content %}
+<h1>Data from Elastic Search</h1>
+<div>
+	<table id="table">
+		<tr>
+			{% for column in columns %}
+			<td> <b>{{ column }}</b></td>
+			{% endfor %}
+		</tr>
+		{% for item in data %}
+			<tr>
+				{% for value in item.values() %}
+					<td>{{ value }}</td>
+				{% endfor %}
+			</tr>
+    	{% endfor %}
+	</table>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
