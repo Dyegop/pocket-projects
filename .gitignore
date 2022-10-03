@@ -131,3 +131,4 @@ dmypy.json
 .idea
 /flask-API-elastic/SampleCSVFile_556kb.csv
 /flask-API-elastic/credentials.json
+/log-analyzer/input/access.log
