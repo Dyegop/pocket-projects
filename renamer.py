@@ -118,14 +118,18 @@ def select_user_input() -> Tuple[str, str, str, bool]:
     Return selected input by the user.
     """
     path = input("Root path: ")
+
     filetype = input("Select filetype AUDIO/PICTURE/VIDEO/DOCUMENT/ALL: ").upper()
-    keyword_filter = input("Filter files by keyword (leave it blank to skip): ").lower()  # NOT CASE SENSITIVE
-    hidden_files = input("Show hidden files? Y/N: ").upper()
     if not filetype:
         filetype = 'ALL'
-    if hidden_files == "Y" or hidden_files == "YES":
+    print(f"{filetype} selected")
+
+    keyword_filter = input("Filter files by keyword (leave it blank to skip): ").lower()  # NOT CASE SENSITIVE
+    hidden_files = input("Show hidden files? Y/N: ").upper()
+
+    if hidden_files in ["Y", "YES"]:
         return path, filetype, keyword_filter, True
-    elif hidden_files == "N" or hidden_files == "NO":
+    elif hidden_files in ["N", "NO"]:
         print("Process cancelled")
         return path, filetype, keyword_filter, False
     else:
