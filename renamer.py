@@ -59,9 +59,9 @@ class Files:
             if files.index(file) == 0:
                 print(f"Files will be renamed in the following format: {new_name}")
                 _continue = input("Continue? -> Y/N\n").upper()
-                if _continue == "Y" or _continue == "YES":
+                if _continue in ('Y', 'YES'):
                     pass
-                elif _continue == "N" or _continue == "NO":
+                elif _continue == ('N', 'NO'):
                     print("Process cancelled")
                     break
                 else:
@@ -80,7 +80,8 @@ class Files:
                 continue
             if not self.hidden_files and (path.name[0] == '.' or path.name == "desktop.ini"):
                 continue
-            if any(extension in path.suffix for extension in self.filetype) and self.keyword_filter in path.stem.lower():
+            if any(extension in path.suffix for extension in self.filetype) and \
+                    self.keyword_filter in path.stem.lower():
                 paths.append(path)
         return paths
 
@@ -96,17 +97,17 @@ class Files:
             -LG_PICTURE -> remame LG phone photos in the format YYYYMMDD_hhmmss
             -LG_VIDEO -> remame LG phone videos in the format VID_YYYYMMDD_hhmmss
         """
-        if pattern == "REMOVE_WHITESPACES":
+        if pattern in ('REMOVE_WHITESPACES', '1'):
             return f"{filename.replace(' ', '')}"
-        if pattern == "REMOVE_TEXT":
+        if pattern in ('REMOVE_TEXT', '2'):
             return f"{filename.replace(text_to_remove, '')}"
-        elif pattern == "OPPO_PICTURE":
+        elif pattern in ('OPPO_PICTURE', '3'):
             return f"{filename[3:11]}_{filename[11:]}"
-        elif pattern == "OPPO_VIDEO":
+        elif pattern in ('OPPO_VIDEO', '4'):
             return f"{filename[0:3]}_{filename[3:11]}_{filename[11:]}"
-        elif pattern == "LG_PICTURE":
+        elif pattern in ('LG_PICTURE', '5'):
             return f"{filename[4:12]}_{filename[13:19]}.jpg"
-        elif pattern == "LG_VIDEO":
+        elif pattern in ('LG_VIDEO', '6'):
             return f"{filename[0:19]}.mp4"
         else:
             print("ERROR - Invalid pattern")
@@ -142,20 +143,24 @@ def select_rename_pattern() -> str:
     Return rename pattern selected by the user.
     """
     print("Select pattern to rename files: \n"
-          "-REMOVE_WHITESPACES -> remove whitespaces from filename\n"
-          "-REMOVE_TEXT        -> remove a given text from filename\n"
-          "-OPPO_PICTURE       -> remame Oppo phone photos in the format YYYYMMDD_hhmmss\n"
-          "-OPPO_VIDEO         -> remame Oppo phone videos in the format VID_YYYYMMDD_hhmmss\n"
-          "-LG_PICTURE         -> remame LG phone photos in the format YYYYMMDD_hhmmss\n"
-          "-LG_VIDEO           -> remame LG phone videos in the format VID_YYYYMMDD_hhmmss")
+          "1) REMOVE_WHITESPACES -> remove whitespaces from filename\n"
+          "2) REMOVE_TEXT        -> remove a given text from filename\n"
+          "3) OPPO_PICTURE       -> remame Oppo phone photos in the format YYYYMMDD_hhmmss\n"
+          "4) OPPO_VIDEO         -> remame Oppo phone videos in the format VID_YYYYMMDD_hhmmss\n"
+          "5) LG_PICTURE         -> remame LG phone photos in the format YYYYMMDD_hhmmss\n"
+          "6) LG_VIDEO           -> remame LG phone videos in the format VID_YYYYMMDD_hhmmss")
     return input().upper()
 
 
 
 
 if __name__ == "__main__":
-    print("Script to rename files")
-    user_path, user_filetypes, user_keyword, user_hidden_files = select_user_input()
+    print("---- Script to rename files ----")
+    try:
+        user_path, user_filetypes, user_keyword, user_hidden_files = select_user_input()
+    except KeyboardInterrupt:
+        print("Program interrupted by user.")
+        raise sys.exit(1)
 
     try:
         F = Files(path=Path(user_path),
@@ -178,9 +183,13 @@ if __name__ == "__main__":
         print(f"No files found at {user_path}")
         raise sys.exit(0)
 
-    rename_pattern = select_rename_pattern()
+    try:
+        rename_pattern = select_rename_pattern()
+    except KeyboardInterrupt:
+        print("Program interrupted by user.")
+        raise sys.exit(1)
 
-    if rename_pattern == 'REMOVE_TEXT':
+    if rename_pattern in ('REMOVE_TEXT', '2'):
         user_text_to_remove = input("Type text to remove: ")  # case sensitive
         F.rename_files(rename_pattern, user_text_to_remove)
     else:
