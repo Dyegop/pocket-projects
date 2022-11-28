@@ -158,11 +158,7 @@ if __name__ == "__main__":
     print("---- Script to rename files ----")
     try:
         user_path, user_filetypes, user_keyword, user_hidden_files = select_user_input()
-    except KeyboardInterrupt:
-        print("Program interrupted by user.")
-        raise sys.exit(1)
 
-    try:
         F = Files(path=Path(user_path),
                   filetype=VALID_FILETYPES[user_filetypes],
                   keyword_filter=user_keyword,
@@ -170,27 +166,30 @@ if __name__ == "__main__":
         print(f"Found the following files at {user_path}:")
         print(*F.list_files(), sep='\n')
         print()
+
+        if not F.list_files():
+            print(f"No files found at {user_path}")
+            raise sys.exit(0)
+
+        rename_pattern = select_rename_pattern()
+
+        if rename_pattern in ('REMOVE_TEXT', '2'):
+            user_text_to_remove = input("Type text to remove: ")  # case sensitive
+            F.rename_files(rename_pattern, user_text_to_remove)
+        else:
+            F.rename_files(rename_pattern)
+
+    except KeyboardInterrupt:
+        print("Program interrupted by user.")
+        raise sys.exit(1)
+
     except KeyError:
         print("Incorrect file type selected")
         print("Valid options: AUDIO, PICTURE, VIDEO, DOCUMENT, ALL")
         raise sys.exit(1)
+
     except FileNotFoundError:
         print("Incorrect path selected")
         print("Please, provide a valid directory")
         raise sys.exit(1)
 
-    if not F.list_files():
-        print(f"No files found at {user_path}")
-        raise sys.exit(0)
-
-    try:
-        rename_pattern = select_rename_pattern()
-    except KeyboardInterrupt:
-        print("Program interrupted by user.")
-        raise sys.exit(1)
-
-    if rename_pattern in ('REMOVE_TEXT', '2'):
-        user_text_to_remove = input("Type text to remove: ")  # case sensitive
-        F.rename_files(rename_pattern, user_text_to_remove)
-    else:
-        F.rename_files(rename_pattern)
