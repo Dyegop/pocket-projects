@@ -23,7 +23,7 @@ class LogRow:
     response_type: str
 
     def __getitem__(self, item):
-        return getattr(self, item)
+        return getattr(self, item)  # Return the given attribute of a LogRow object
 
 
 
@@ -33,7 +33,7 @@ class LogFile:
     This class parse log file https://www.secrepo.com/squid/access.log.gz and allows you to get additional information.
     """
     def __init__(self, log_filepath: str, ignore_headers: bool = True):
-        self.log_filepath: str = log_filepath
+        self.log_filepath = log_filepath
         self.ignore_headers = ignore_headers  # added option to ignore first row (empty in this case)
         self.rows: dict = {}
 
