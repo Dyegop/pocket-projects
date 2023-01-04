@@ -87,8 +87,8 @@ def get_download_input() -> Union[None, tuple[str, str, bool]]:
 if __name__ == "__main__":
     print("---- Instagram Application to analyze data ----\n")
 
-    username = input("Type your username: ")
-    session = InstagramClient(username, SESSION_FILE)
+    username = input("Username: ")
+    session = InstagramClient(username, session_file=SESSION_FILE)
     session.login()
     print("Login successful.\n")
 

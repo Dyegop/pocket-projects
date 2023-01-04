@@ -7,7 +7,6 @@ import numpy as np
 import instaloader
 import heapq
 from datetime import datetime
-from getpass import getpass
 from itertools import takewhile
 from typing import Optional, List, Dict
 
@@ -42,20 +41,20 @@ class InstagramClient:
             BadCredentialsException – If the provided password is wrong.
             ConnectionException – If connection to Instagram failed.
         """
-        print(f"Logged in instagram user {self.username} with password.")
-        password = getpass(prompt='Type your password: ')
+        password = input("Password: ")  # For shell execution -> getpass(prompt='Type your password: ')
         try:
             self._loader.login(user=self.username, passwd=password)
         except instaloader.TwoFactorAuthRequiredException:
             auth_code = input("2FA enabled. Please, type your authentication code: ")
             self._loader.two_factor_login(auth_code)
+        print(f"Logged in instagram user {self.username} with password.")
 
     def _login_with_sessionfile(self, filename: str) -> None:
         """
         Log in to Instagram from a previously stored session. Not to be called directly, use login() instead.
         """
-        print(f"Logged in instagram user {self.username} with session file.")
         self._loader.load_session_from_file(username=self.username, filename=filename)
+        print(f"Logged in instagram user {self.username} with session file.")
 
     def close_session(self) -> None:
         """ Close instagram session"""
