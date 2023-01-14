@@ -36,8 +36,8 @@ from client import InstagramClient
 
 
 # SETUP BEFORE EXECUTION
-SESSION_FILE: str = r'C:\Users\ponce\AppData\Local\Instaloader\session-diegop__03'
-IGNORE_FILE: str = r'resources/ignore.txt'
+SESSION_FILE: str = ''
+IGNORE_FILE: str = ''
 MAX_ERRORS: int = 3
 
 
