@@ -49,13 +49,17 @@ class FileRenamer(base.Files):
             return f"{filename.replace(' ', '')}"
         elif pattern in ('REMOVE_TEXT', '2'):
             return f"{filename.replace(text_to_remove, '')}"
-        elif pattern in ('OPPO_PICTURE', '3'):
+        elif pattern in ('PIXEL_PICTURE', '3'):
+            return f"{filename[4:18]}_{filename[22:]}"
+        elif pattern in ('PIXEL_VIDEO', '4'):
+            return f""
+        elif pattern in ('OPPO_PICTURE', '5'):
             return f"{filename[3:11]}_{filename[11:]}"
-        elif pattern in ('OPPO_VIDEO', '4'):
+        elif pattern in ('OPPO_VIDEO', '6'):
             return f"{filename[0:3]}_{filename[3:11]}_{filename[11:]}"
-        elif pattern in ('LG_PICTURE', '5'):
+        elif pattern in ('LG_PICTURE', '7'):
             return f"{filename[4:12]}_{filename[13:19]}.jpg"
-        elif pattern in ('LG_VIDEO', '6'):
+        elif pattern in ('LG_VIDEO', '8'):
             return f"{filename[0:19]}.mp4"
         else:
             print("ERROR - Invalid pattern.")
@@ -67,10 +71,12 @@ class FileRenamer(base.Files):
         print("Select pattern to rename file-management: \n"
               "1) REMOVE_WHITESPACES -> remove whitespaces from filename\n"
               "2) REMOVE_TEXT        -> remove a given text from filename\n"
-              "3) OPPO_PICTURE       -> remame Oppo phone photos in the format YYYYMMDD_hhmmss\n"
-              "4) OPPO_VIDEO         -> remame Oppo phone videos in the format VID_YYYYMMDD_hhmmss\n"
-              "5) LG_PICTURE         -> remame LG phone photos in the format YYYYMMDD_hhmmss\n"
-              "6) LG_VIDEO           -> remame LG phone videos in the format VID_YYYYMMDD_hhmmss")
+              "3) PIXEL_PICTURE      -> remame Pixel photos in the format YYYYMMDD_hhmmss\n"
+              "4) PIXEL_VIDEO        -> remame Pixel videos in the format VID_YYYYMMDD_hhmmss\n"
+              "5) OPPO_PICTURE       -> remame Oppo photos in the format YYYYMMDD_hhmmss\n"
+              "6) OPPO_VIDEO         -> remame Oppo videos in the format VID_YYYYMMDD_hhmmss\n"
+              "7) LG_PICTURE         -> remame LG photos in the format YYYYMMDD_hhmmss\n"
+              "8) LG_VIDEO           -> remame LG videos in the format VID_YYYYMMDD_hhmmss")
         return input().upper()
 
 
