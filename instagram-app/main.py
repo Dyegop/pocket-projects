@@ -7,7 +7,6 @@ SETUP:
     -MAX_ERRORS   -> Define max number of input errors before exiting the application
 
 
-TODO - implement asyncio
 TODO - function to save output
 
 
@@ -102,7 +101,10 @@ if __name__ == "__main__":
                 result = session.get_difference_followers_followees(ignore_accounts)
             else:
                 result = session.get_difference_followers_followees()
-            print(*result, sep='\n')
+            if result:
+                print(*result, sep='\n')
+            else:
+                print("No users were found")
 
         elif user_choice == 2:
             try:
