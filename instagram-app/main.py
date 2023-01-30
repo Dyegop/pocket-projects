@@ -32,12 +32,7 @@ def execution(user_session, likes):
 import sys
 from typing import Union
 from client import InstagramClient
-
-
-# SETUP BEFORE EXECUTION
-SESSION_FILE: str = ''
-IGNORE_FILE: str = ''
-MAX_ERRORS: int = 3
+from resources import constants
 
 
 def menu() -> int:
@@ -51,7 +46,7 @@ def menu() -> int:
           "5- Download posts from hashtag.\n"
           "6- Close program.")
     try:
-        if menu_error_counter == MAX_ERRORS:
+        if menu_error_counter == constants.MAX_ERRORS:
             print("Error, exiting application...")
             raise sys.exit(1)
         return int(input())
@@ -87,7 +82,7 @@ if __name__ == "__main__":
     print("---- Instagram Application to analyze data ----\n")
 
     username = input("Username: ")
-    session = InstagramClient(username, session_file=SESSION_FILE)
+    session = InstagramClient(username, session_file=constants.SESSION_FILE)
     session.login()
     print("Login successful.\n")
 
@@ -96,8 +91,8 @@ if __name__ == "__main__":
 
         if user_choice == 1:
             print("Recovering users that are not following you back...")
-            if IGNORE_FILE:
-                ignore_accounts = [i.rstrip("\n") for i in open(IGNORE_FILE, 'r')]
+            if constants.IGNORE_FILE:
+                ignore_accounts = [i.rstrip("\n") for i in open(constants.IGNORE_FILE, 'r')]
                 result = session.get_difference_followers_followees(ignore_accounts)
             else:
                 result = session.get_difference_followers_followees()
