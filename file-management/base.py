@@ -96,7 +96,7 @@ def get_user_input() -> Tuple[str, str, str, bool]:
     """ Return user input. """
     try:
         path = input("Root path: ")
-        file_ext = input("Select file extensions from AUDIO/PICTURE/VIDEO/DOCUMENT/ALL: ").upper()
+        file_ext = input("Select file extension: from AUDIO/PICTURE/VIDEO/DOCUMENT/ALL: ").upper()
 
         if not file_ext:
             file_ext = 'ALL'
