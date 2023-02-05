@@ -50,9 +50,9 @@ class FileRenamer(base.Files):
         elif pattern in ('REMOVE_TEXT', '2'):
             return f"{filename.replace(text_to_remove, '')}"
         elif pattern in ('PIXEL_PICTURE', '3'):
-            return f"{filename[4:18]}_{filename[22:]}"
+            return f"{filename[4:19]}.jpg"
         elif pattern in ('PIXEL_VIDEO', '4'):
-            return f""
+            return f"VID_{filename[4:19]}.mp4"
         elif pattern in ('OPPO_PICTURE', '5'):
             return f"{filename[3:11]}_{filename[11:]}"
         elif pattern in ('OPPO_VIDEO', '6'):
