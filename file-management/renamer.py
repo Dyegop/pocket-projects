@@ -9,15 +9,18 @@ from typing import Optional
 
 
 class FileRenamer(base.Files):
-    def rename_files(self, pattern: str, text_to_remove: Optional[str] = None) -> None:
+    def rename_files(self, pattern: str, text_to_remove: Optional[str] = None,
+                     text_to_replace: Optional[str] = None) -> None:
         """ Rename a group of file-management using a pattern. """
         _files = self._get_filepaths()
 
         for file in _files:
             if text_to_remove:
-                new_name = self._replace_filename(file.name, pattern, text_to_remove)
+                new_name = self._change_filename(file.name, pattern, text_to_remove)
+            elif text_to_remove and text_to_replace:
+                new_name = self._change_filename(file.name, pattern, text_to_remove, text_to_replace)
             else:
-                new_name = self._replace_filename(file.name, pattern)
+                new_name = self._change_filename(file.name, pattern)
 
             if _files.index(file) == 0:
                 print(f"Files will be renamed in the following format: {new_name}")
@@ -34,7 +37,8 @@ class FileRenamer(base.Files):
             print(f"{file.name} renamed to {new_name}")
 
     @staticmethod
-    def _replace_filename(filename: str, pattern: str, text_to_remove: Optional[str] = None) -> str:
+    def _change_filename(filename: str, pattern: str, text_to_remove: Optional[str] = None,
+                         text_to_replace: Optional[str] = None) -> str:
         """
         Return new filename for a given pattern.
         Current supported pattern:
@@ -49,18 +53,23 @@ class FileRenamer(base.Files):
             return f"{filename.replace(' ', '')}"
         elif pattern in ('REMOVE_TEXT', '2'):
             return f"{filename.replace(text_to_remove, '')}"
-        elif pattern in ('PIXEL_PICTURE', '3'):
+        elif pattern in ('REPLACE_TEXT', '3'):
+            return f"{filename.replace(text_to_remove, text_to_replace)}"
+        elif pattern in ('PIXEL_PICTURE', '4'):
             return f"{filename[4:19]}.jpg"
-        elif pattern in ('PIXEL_VIDEO', '4'):
+        elif pattern in ('PIXEL_VIDEO', '5'):
             return f"VID_{filename[4:19]}.mp4"
-        elif pattern in ('OPPO_PICTURE', '5'):
+        elif pattern in ('OPPO_PICTURE', '6'):
             return f"{filename[3:11]}_{filename[11:]}"
-        elif pattern in ('OPPO_VIDEO', '6'):
+        elif pattern in ('OPPO_VIDEO', '7'):
             return f"{filename[0:3]}_{filename[3:11]}_{filename[11:]}"
-        elif pattern in ('LG_PICTURE', '7'):
+        elif pattern in ('LG_PICTURE', '8'):
             return f"{filename[4:12]}_{filename[13:19]}.jpg"
-        elif pattern in ('LG_VIDEO', '8'):
+        elif pattern in ('LG_VIDEO', '9'):
             return f"{filename[0:19]}.mp4"
+        elif pattern in ('EXIT', '10'):
+            print("Exiting...")
+            raise sys.exit(0)
         else:
             print("ERROR - Invalid pattern.")
             raise sys.exit(1)
@@ -69,14 +78,16 @@ class FileRenamer(base.Files):
     def select_pattern() -> str:
         """ Return rename pattern selected by the user. """
         print("Select pattern to rename file-management: \n"
-              "1) REMOVE_WHITESPACES -> remove whitespaces from filename\n"
-              "2) REMOVE_TEXT        -> remove a given text from filename\n"
-              "3) PIXEL_PICTURE      -> remame Pixel photos in the format YYYYMMDD_hhmmss\n"
-              "4) PIXEL_VIDEO        -> remame Pixel videos in the format VID_YYYYMMDD_hhmmss\n"
-              "5) OPPO_PICTURE       -> remame Oppo photos in the format YYYYMMDD_hhmmss\n"
-              "6) OPPO_VIDEO         -> remame Oppo videos in the format VID_YYYYMMDD_hhmmss\n"
-              "7) LG_PICTURE         -> remame LG photos in the format YYYYMMDD_hhmmss\n"
-              "8) LG_VIDEO           -> remame LG videos in the format VID_YYYYMMDD_hhmmss")
+              "1) REMOVE_WHITESPACES -> remove whitespaces\n"
+              "2) REMOVE_TEXT        -> remove a given text\n"
+              "3) REPLACE_TEXT       -> replace a given text in the filename\n"
+              "4) PIXEL_PICTURE      -> remame Pixel photos in the format YYYYMMDD_hhmmss\n"
+              "5) PIXEL_VIDEO        -> remame Pixel videos in the format VID_YYYYMMDD_hhmmss\n"
+              "6) OPPO_PICTURE       -> remame Oppo photos in the format YYYYMMDD_hhmmss\n"
+              "7) OPPO_VIDEO         -> remame Oppo videos in the format VID_YYYYMMDD_hhmmss\n"
+              "8) LG_PICTURE         -> remame LG photos in the format YYYYMMDD_hhmmss\n"
+              "9) LG_VIDEO           -> remame LG videos in the format VID_YYYYMMDD_hhmmss\n"
+              "10) EXIT              -> exit the program")
         return input().upper()
 
 
@@ -101,9 +112,13 @@ if __name__ == "__main__":
 
         rename_pattern = F.select_pattern()
 
-        if rename_pattern in ('REMOVE_TEXT', '2'):
+        if rename_pattern in ('REMOVE_TEXT', '2', 'REPLACE_TEXT', '3'):
             user_text_to_remove = input("Type text to remove: ")  # case sensitive
             F.rename_files(rename_pattern, user_text_to_remove)
+        elif rename_pattern in ('REPLACE_TEXT', '3'):
+            user_text_to_remove = input("Type text to replace in the filename: ")  # case sensitive
+            user_text_to_replace = input("Type new text: ")                        # case sensitive
+            F.rename_files(rename_pattern, user_text_to_remove, user_text_to_replace)
         else:
             F.rename_files(rename_pattern)
 
