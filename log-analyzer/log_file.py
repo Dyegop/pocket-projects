@@ -40,7 +40,7 @@ class LogFile:
         self._load_LogFile()  # Open log file
 
     def _load_LogFile(self) -> None:
-        # I have intentionally avoided the use of non built-in libraries to parse log file.
+        # I have intentionally avoided the use of non-built-in libraries to parse log file.
         # utf-8 enconding is required in this exercise.
         with open(self.log_filepath, mode='r', encoding='utf-8') as f:
             lines = f.readlines()[1:] if self.ignore_headers else f.readlines()
@@ -72,7 +72,7 @@ class LogFile:
         """
         all_ip_address = [row['ip_address'] for row in self.rows.values()]
         # I use collections module since it is built-in and works pretty fast.
-        # It also allows us to obtain other output, e.g three most frequent IP addresses.
+        # It also allows us to obtain other output, e.g. three most frequent IP addresses.
         counter = Counter(all_ip_address).most_common()
 
         # Code below will check what IPs are the most frequent

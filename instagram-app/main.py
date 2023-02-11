@@ -2,13 +2,9 @@
 Main file to execute instagram-app (console app).
 
 SETUP:
-    -SESSION_FILE -> Path to session file. Leave blank in order to login with user password
+    -SESSION_FILE -> Path to session file. Leave blank in order to log in with user password
     -IGNORE_FILE  -> Path to file with usernames to ignore in Difference followers-followees (optional)
     -MAX_ERRORS   -> Define max number of input errors before exiting the application
-
-
-TODO - function to save output
-
 
 OLD CONCURRENT IMPLEMENTATION
 def execution(user_session, likes):
