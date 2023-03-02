@@ -34,8 +34,12 @@ class FileRenamer(base.Files):
                 else:
                     print("Invalid option. Process stopped")
                     break
-            file.rename(Path(f'{file.parents[0]}\\{new_name}'))
-            print(f"{file.name} renamed to {new_name}")
+
+            try:
+                file.rename(Path(f'{file.parents[0]}\\{new_name}'))
+                print(f"{file.name} renamed to {new_name}")
+            except FileExistsError:
+                print(f"{file.name} already exists")
 
     @staticmethod
     def _change_filename(filename: str, pattern: str, text_to_remove: Optional[str] = None,
