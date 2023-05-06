@@ -17,7 +17,9 @@ class FileRenamer(base.Files):
         for file in _files:
             if text_to_remove:
                 if text_to_replace:
-                    new_name = self._change_filename(file.name, pattern, text_to_remove, text_to_replace)
+                    new_name = self._change_filename(
+                        file.name, pattern, text_to_remove, text_to_replace
+                    )
                 else:
                     new_name = self._change_filename(file.name, pattern, text_to_remove)
             else:
@@ -121,8 +123,8 @@ if __name__ == "__main__":
             user_text_to_remove = input("Type text to remove: ")  # case sensitive
             F.rename_files(rename_pattern, user_text_to_remove)
         elif rename_pattern in ('REPLACE_TEXT', '3'):
-            user_text_to_remove = input("Type text to replace in the filename: ")  # case sensitive
-            user_text_to_replace = input("Type new text: ")                        # case sensitive
+            user_text_to_remove = input("Type text to replace in the filename: ")
+            user_text_to_replace = input("Type new text: ")
             F.rename_files(rename_pattern, user_text_to_remove, user_text_to_replace)
         else:
             F.rename_files(rename_pattern)

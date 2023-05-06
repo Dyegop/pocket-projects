@@ -57,10 +57,10 @@ class ParksListAPI(Resource):
         response_data = []
 
         # Request arguments (we are not validating data in this practice)
-        start_date_arg = request.args.get('start_date')   # start_date filter for production datetimes
-        end_date_arg = request.args.get('end_date')       # end_date filter for production datetimes
+        start_date_arg = request.args.get('start_date')   # filter for production datetimes
+        end_date_arg = request.args.get('end_date')       # filter for production datetimes
         start_arg = request.args.get('start', '1')    # initial value for pagination
-        limit_arg = request.args.get('limit', '100')  # set the max number of rows for 'production' (100 by default)
+        limit_arg = request.args.get('limit', '100')  # set the max number of rows
 
         for park in parks.park_list:
             # Load park data
@@ -72,22 +72,25 @@ class ParksListAPI(Resource):
                                     for index, row in parks[park].production.iterrows()
                                     if start_date_arg <= row['datetime'][0:10] <= end_date_arg])
             else:
-                park_production = [{'datetime': row['datetime'],
-                                    'MW': row['MW']} for index, row in parks[park].production.iterrows()]
+                park_production = [
+                    {'datetime': row['datetime'],
+                     'MW': row['MW']} for index, row in parks[park].production.iterrows()]
 
             response_data.append({
                     'park_name': park,
                     'timezone': parks[park].timezone,
                     'energy_type': parks[park].energy_type,
-                    'production': (_get_paginated_list(park_production, "/parks", start_arg, limit_arg)
-                                   if park_production else {"count": 0,
-                                                            "limit": limit_arg,
-                                                            "start": start_arg,
-                                                            "previous": "",
-                                                            "next": "",
-                                                            "results": []
-                                                            }
-                                   )
+                    'production': (
+                        _get_paginated_list(park_production, "/parks", start_arg, limit_arg)
+                        if park_production else {
+                            "count": 0,
+                            "limit": limit_arg,
+                            "start": start_arg,
+                            "previous": "",
+                            "next": "",
+                            "results": []
+                        }
+                    )
             })
 
         return {'parks': response_data}, 200
@@ -114,22 +117,26 @@ class ParkAPI(Resource):
                                     for index, row in parks[park].production.iterrows()
                                     if start_date_arg <= row['datetime'][0:10] <= end_date_arg])
             else:
-                park_production = [{'datetime': row['datetime'],
-                                    'MW': row['MW']} for index, row in parks[park].production.iterrows()]
+                park_production = [
+                    {'datetime': row['datetime'],
+                     'MW': row['MW']} for index, row in parks[park].production.iterrows()
+                ]
 
             response_data = {
                 'park_name': park,
                 'timezone': parks[park].timezone,
                 'energy_type': parks[park].energy_type,
-                'production': (_get_paginated_list(park_production, "/parks", start_arg, limit_arg)
-                               if park_production else {"count": 0,
-                                                        "limit": limit_arg,
-                                                        "start": start_arg,
-                                                        "previous": "",
-                                                        "next": "",
-                                                        "results": []
-                                                        }
-                               )
+                'production': (
+                    _get_paginated_list(park_production, "/parks", start_arg, limit_arg)
+                    if park_production else {
+                        "count": 0,
+                        "limit": limit_arg,
+                        "start": start_arg,
+                        "previous": "",
+                        "next": "",
+                        "results": []
+                    }
+                )
             }
 
             return {'park': response_data}, 200

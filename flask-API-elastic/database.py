@@ -1,4 +1,4 @@
-""" Connection to Elastic Search database and methods to load a csv file into that database """
+""" Connection to ElasticSearch database and methods to load a csv file into that database """
 
 import json
 import csv

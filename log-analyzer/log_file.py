@@ -30,11 +30,12 @@ class LogRow:
 class LogFile:
     """
     Class representation of a LogFile.
-    This class parse log file https://www.secrepo.com/squid/access.log.gz and allows you to get additional information.
+    This class parse log file https://www.secrepo.com/squid/access.log.gz and allows you to get
+    additional information.
     """
     def __init__(self, log_filepath: str, ignore_headers: bool = True):
         self.log_filepath = log_filepath
-        self.ignore_headers = ignore_headers  # added option to ignore first row (empty in this case)
+        self.ignore_headers = ignore_headers  # added option to ignore first row
         self.rows: dict = {}
 
         self._load_LogFile()  # Open log file
@@ -62,8 +63,8 @@ class LogFile:
                 except (ValueError, IndexError) as err:  # Only those exceptions have been found
                     print(f"Error parsing line {line_number}: {err}. Continue to next line")
 
-            # A regex implementation could be considered in order to fully ensure that every field in the log file
-            # comes as expected.
+            # A regex implementation could be considered in order to fully ensure that every
+            # field in the log file comes as expected.
 
     def frequent_ip_addresses(self, frequency: str) -> List[str]:
         """
@@ -77,7 +78,8 @@ class LogFile:
 
         # Code below will check what IPs are the most frequent
         # If several IPs shared the same max frequency, it returns all of them.
-        # For example, if three different IPs appear 100 times, all those three IPs will be returned.
+        # For example, if three different IPs appear 100 times, all those three IPs will be
+        # returned.
         if frequency == 'most_common':
             max_freq = max([ip[1] for ip in counter])
             most_common_IPs = [ip[0] for ip in counter if ip[1] == max_freq]

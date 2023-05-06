@@ -20,8 +20,9 @@ class Parks:
         for index, row in self.park_info.iterrows():
             if park_name == row['park_name']:
                 try:
-                    self._parks[row['park_name']] = Park(row['park_name'], row['timezone'], row['energy_type'],
-                                                     park_data_csv)
+                    self._parks[row['park_name']] = Park(
+                        row['park_name'], row['timezone'], row['energy_type'], park_data_csv
+                    )
                 except FileNotFoundError:
                     print(f"Error, file {park_data_csv} not found")
                 except IOError:
