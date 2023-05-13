@@ -35,13 +35,13 @@ class InstagramClient:
 
     def _login_with_password(self) -> None:
         """
-        Log in to instagram with username and password. Not to be called directly, use login() instead.
+        Log in to instagram with username and password.
         Raises:
             InvalidArgumentException – If the provided username does not exist.
             BadCredentialsException – If the provided password is wrong.
             ConnectionException – If connection to Instagram failed.
         """
-        password = input("Password: ")  # For shell execution -> getpass(prompt='Type your password: ')
+        password = input("Password: ")  # For cmd execution use -> getpass(prompt='')
         try:
             self._loader.login(user=self.username, passwd=password)
         except instaloader.TwoFactorAuthRequiredException:
@@ -50,9 +50,7 @@ class InstagramClient:
         print(f"Logged in instagram user {self.username} with password.")
 
     def _login_with_sessionfile(self, filename: str) -> None:
-        """
-        Log in to Instagram from a previously stored session. Not to be called directly, use login() instead.
-        """
+        """ Log in to Instagram from a previously stored session. """
         self._loader.load_session_from_file(username=self.username, filename=filename)
         print(f"Logged in instagram user {self.username} with session file.")
 
@@ -116,7 +114,9 @@ class InstagramClient:
             print(f"Downloading posts from user {username}...")
             try:
                 # takewhile selects values from iterator that fulfill a given condition
-                for post in takewhile(lambda p: start_date <= p.date <= end_date, profile.get_posts()):
+                for post in takewhile(
+                        lambda p: start_date <= p.date <= end_date, profile.get_posts()
+                ):
                     if download_video:
                         self._loader.download_post(post, username)
                     if not post.is_video:
@@ -139,7 +139,8 @@ class InstagramClient:
         start_date = self._convert_str_datetime(start_date)
         end_date = self._convert_str_datetime(end_date)
 
-        # See https://instaloader.github.io/codesnippets.html for detailed explanation of the following logic
+        # See https://instaloader.github.io/codesnippets.html for detailed explanation of the
+        # following logic
         k = 0  # initiate k
         # k_list = []  # uncomment this to tune k
 

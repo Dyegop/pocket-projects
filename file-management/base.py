@@ -1,5 +1,6 @@
 """
-Class Files defines all files in a given path, filtered by file extension and a keyword (optionally).
+Class Files defines all files in a given path, filtered by file extension and a keyword
+(optionally).
 Hidden files can be selected or not.
 """
 
@@ -21,8 +22,12 @@ FILE_EXTENSIONS = {
 
 
 class Files:
-    def __init__(self, path: Path, file_ext: Tuple[str, ...] = FILE_EXTENSIONS['ALL'], keyword_filter: str = '',
-                 hidden_files: bool = False):
+    def __init__(
+            self,
+            path: Path, file_ext: Tuple[str, ...] = FILE_EXTENSIONS['ALL'],
+            keyword_filter: str = '',
+            hidden_files: bool = False
+    ):
         self.path = path
         self.file_ext = file_ext
         self.keyword_filter = keyword_filter
@@ -69,7 +74,11 @@ class Files:
             elif file.suffix == '.pdf':
                 with open(file, 'rb') as f:
                     pdf_obj = PyPDF2.PdfFileReader(f)
-                    return '\n'.join([pdf_obj.getPage(page).extractText() for page in range(0, pdf_obj.numPages)])
+                    return '\n'.join(
+                        [pdf_obj.getPage(page).extractText() for page in range(
+                            0, pdf_obj.numPages
+                        )]
+                    )
             else:
                 return False, "File extension currently not supported."
         except PermissionError:
@@ -102,7 +111,9 @@ def get_user_input() -> Tuple[str, str, str, bool]:
             file_ext = 'ALL'
         print(f"{file_ext} selected")
 
-        keyword_filter = input("Filter file-management by keyword [leave it blank to skip]: ").lower()  # NOT CASE SENSITIVE
+        keyword_filter = input(
+            "Filter file-management by keyword [leave it blank to skip]: "
+        ).lower()  # NOT CASE SENSITIVE
         hidden_files = input("Show hidden file-management? Y/N: ").upper()
         print()
 

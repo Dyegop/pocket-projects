@@ -7,7 +7,9 @@ from pathlib import Path
 class FileFinder(base.Files):
     def find_files(self, pattern: str) -> str:
         """ Return a list of filenames in a directory that matches a pattern """
-        matches = [file for file in self.list_files() if re.search(re.compile(pattern, re.VERBOSE), file)]
+        matches = [
+            file for file in self.list_files() if re.search(re.compile(pattern, re.VERBOSE), file)
+        ]
         return '\n'.join(matches)
 
     def find_pattern_in_file(self, file: Path, pattern: str, enconding: str = 'utf8') -> str:
@@ -25,8 +27,8 @@ class FileFinder(base.Files):
     def execute_action(self, pattern: str) -> str:
         """ """
         print("Select action to execute: \n"
-              "1) FIND_FILES                  -> find files that has the given pattern in their name\n"
-              "2) FIND_PATTERN_IN_FILE        -> find files that contains the given pattern \n")
+              "1) FIND_FILES            -> find files that has the given pattern in their name\n"
+              "2) FIND_PATTERN_IN_FILE  -> find files that contains the given pattern \n")
 
         action = input().upper()
         if action in ('1', 'FIND_FILES'):
